@@ -1,5 +1,8 @@
-public class HelloWorld {
-   public static void main(String[] args) {
-      System.out.println("Hello, World");
+public class Hello {
+   public void test1(int a,int b,int c, String d,double e ){
+
+   }
+   public void test1(int a,int b,int c, String d,double e ){
+
    }
 }
