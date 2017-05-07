@@ -1,10 +1,15 @@
 package classes;
 
+import java.util.HashMap;
 import java.util.List;
 
 import classes.Java8Parser.*;
 
 public class Visitor<T> extends Java8BaseVisitor<T>{
+	
+	public HashMap<String,Integer> lexemes = new HashMap<String,Integer>();
+	public HashMap<String,Integer> attributes = new HashMap<String,Integer>();
+	public HashMap<String,Integer> classes = new HashMap<String,Integer>();
 	
 	@Override
 	public T visitCompilationUnit(CompilationUnitContext ctx) {
@@ -60,6 +65,22 @@ public class Visitor<T> extends Java8BaseVisitor<T>{
 	}
 	
 	@Override
+	public T visitFieldDeclaration(FieldDeclarationContext ctx) {
+		visitChildren(ctx);
+		return null;
+	}
+	
+	@Override
+	public T visitVariableDeclaratorList(VariableDeclaratorListContext ctx) {
+
+		List<VariableDeclaratorContext> varDecl = ctx.variableDeclarator();
+		for(VariableDeclaratorContext var: varDecl){		
+			this.attributes.put(var.getText(), 0);
+		}
+		return null;
+	}
+	
+	@Override
 	public T visitMethodDeclaration(MethodDeclarationContext ctx) {
 		visitMethodBody(ctx.methodBody());
 		visitMethodHeader(ctx.methodHeader());
@@ -71,7 +92,9 @@ public class Visitor<T> extends Java8BaseVisitor<T>{
 		
 		int tmp = ctx.getStop().getLine() - ctx.getStart().getLine();
 		int TotalLines =(ctx.block().blockStatements()!= null) ? tmp: 1;
-		System.out.printf("Lineas totales en el metodo %d \n",TotalLines-1);	
+		System.out.printf("Lineas totales en el metodo %d \n",TotalLines-1);
+		
+		
 		return null;
 	}
 	
@@ -104,5 +127,6 @@ public class Visitor<T> extends Java8BaseVisitor<T>{
 		T numParams = (T) new Integer(num);
 		return numParams;
 	}
+	
 }
 
