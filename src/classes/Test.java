@@ -6,11 +6,18 @@ import org.antlr.v4.runtime.tree.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.Map;
+
+import java.util.Iterator;
 
 public class Test {
 
+	public static HashMap<String,Integer> lexemes;
+	public static HashMap<String,Integer> attributes;
+	public static HashMap<String,Integer> classes;
 	
 	public static void main(String[] args) throws Exception {
 		try{
@@ -29,15 +36,23 @@ public class Test {
 			loader.visit(tree);
 			System.out.println(tree.toStringTree(parser)); // print LISP-style tree
 			
-			
+			lexemes = loader.lexemes;
+			attributes = loader.attributes;
+			classes = loader.classes;
+		    /*Iterator it = (Iterator) attributes.entrySet().iterator();
+		    while (it.hasNext()) {
+		        Map.Entry pair = (Map.Entry)it.next();
+		        System.out.println(pair.getKey() + " = " + pair.getValue());
+		        it.remove(); // avoids a ConcurrentModificationException
+		    }*/
 	        
 
-	        /*try {
+	        try {
 	        	System.out.println("Si");
 	            main.run();
 	        } catch (Exception e) {
 	            System.err.println(e.getMessage());
-	        }*/
+	        }
 	        
 
 			
@@ -54,26 +69,48 @@ public class Test {
         Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/words?user=root&password=root&zeroDateTimeBehavior=convertToNull");
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM words.word");
-        System.out.println("Printing schema for table: " + resultSet.getMetaData().getTableName(1));
-        int columnCount = resultSet.getMetaData().getColumnCount();
+        //System.out.println("Printing schema for table: " + resultSet.getMetaData().getTableName(1));
+        //int columnCount = resultSet.getMetaData().getColumnCount();
 
-        for (int i = 1; i <= columnCount; i++) {
+        /*for (int i = 1; i <= columnCount; i++) {
             System.out.println(i + " " + resultSet.getMetaData().getColumnName(i));
         }
 
         System.out.println("Searching for example user.");
-        boolean exampleUserFound = false;
-
+        boolean exampleUserFound = false;*/
+        ArrayList<String> words = new ArrayList<String>();
+        
         while (resultSet.next()) {
-            String username = resultSet.getString("lexeme");
-            System.out.println(username);
-            if (username.equals("hagiographers")) {
-                System.out.println("Example user found.");
-                System.out.println("Name: " + username);
-                exampleUserFound = true;
-
-                break;
-            }
+            words.add(resultSet.getString("lexeme"));
+        }
+        ArrayList<String> notMatchAttributes = new ArrayList<String>();
+        
+	    Iterator it = (Iterator) attributes.entrySet().iterator();
+	    boolean found = false;
+	    while ( it.hasNext() ) {
+	    	found = false;
+	        Map.Entry pair = (Map.Entry)it.next();
+	        String search = pair.getKey().toString();
+	        System.out.println(pair.getKey() + " = " + pair.getValue());
+	        
+	        for(String word : words){
+	        	
+	        	String s = "hello world i am from heaven";
+	        	if (search.indexOf(word) != -1) {
+	        	  found = true;
+	        	  System.out.println("Encontro a: " + search + "Con la palabra: " + word);
+	        	  break;
+	        	}
+	        	
+	        }
+	        
+	        if( !found ){
+	        	notMatchAttributes.add(search);	        	
+	        }
+	        it.remove(); // avoids a ConcurrentModificationException
+	    }
+        for(String a: notMatchAttributes){
+        	System.out.println(a);
         }
         System.out.println("Finalizo");
 

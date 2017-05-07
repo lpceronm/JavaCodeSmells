@@ -74,7 +74,7 @@ public class Visitor<T> extends Java8BaseVisitor<T>{
 	public T visitVariableDeclaratorList(VariableDeclaratorListContext ctx) {
 
 		List<VariableDeclaratorContext> varDecl = ctx.variableDeclarator();
-		for(VariableDeclaratorContext var: varDecl){
+		for(VariableDeclaratorContext var: varDecl){		
 			this.attributes.put(var.getText(), 0);
 		}
 		return null;
@@ -92,7 +92,9 @@ public class Visitor<T> extends Java8BaseVisitor<T>{
 		
 		int tmp = ctx.getStop().getLine() - ctx.getStart().getLine();
 		int TotalLines =(ctx.block().blockStatements()!= null) ? tmp: 1;
-		System.out.printf("Lineas totales en el metodo %d \n",TotalLines-1);	
+		System.out.printf("Lineas totales en el metodo %d \n",TotalLines-1);
+		
+		
 		return null;
 	}
 	
@@ -125,5 +127,6 @@ public class Visitor<T> extends Java8BaseVisitor<T>{
 		T numParams = (T) new Integer(num);
 		return numParams;
 	}
+	
 }
 

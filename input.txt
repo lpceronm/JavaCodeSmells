@@ -1,7 +1,7 @@
 	public class Hello {
 	
 	int a, b, c;
-	float d, e, f, g;
+	float zymoscope, e, f, g;
    public void test1(int a,int b,int c, String d,double e ){
 
    }
