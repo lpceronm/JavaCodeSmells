@@ -1,10 +1,15 @@
 package classes;
 
+import java.util.HashMap;
 import java.util.List;
 
 import classes.Java8Parser.*;
 
 public class Visitor<T> extends Java8BaseVisitor<T>{
+	
+	public HashMap<String,Integer> lexemes = new HashMap<String,Integer>();
+	public HashMap<String,Integer> attributes = new HashMap<String,Integer>();
+	public HashMap<String,Integer> classes = new HashMap<String,Integer>();
 	
 	@Override
 	public T visitCompilationUnit(CompilationUnitContext ctx) {
@@ -56,6 +61,22 @@ public class Visitor<T> extends Java8BaseVisitor<T>{
 	@Override
 	public T visitClassMemberDeclaration(ClassMemberDeclarationContext ctx) {
 		visitChildren(ctx);
+		return null;
+	}
+	
+	@Override
+	public T visitFieldDeclaration(FieldDeclarationContext ctx) {
+		visitChildren(ctx);
+		return null;
+	}
+	
+	@Override
+	public T visitVariableDeclaratorList(VariableDeclaratorListContext ctx) {
+
+		List<VariableDeclaratorContext> varDecl = ctx.variableDeclarator();
+		for(VariableDeclaratorContext var: varDecl){
+			this.attributes.put(var.getText(), 0);
+		}
 		return null;
 	}
 	

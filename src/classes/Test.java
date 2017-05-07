@@ -10,13 +10,13 @@ import java.util.Dictionary;
 import java.util.HashMap;
 
 public class Test {
-	public HashMap<String,Integer> lexemes = new HashMap<String,Integer>();
-	public HashMap<String,Integer> classes = new HashMap<String,Integer>();
+
 	
 	public static void main(String[] args) throws Exception {
 		try{
 			
-
+			Test main = new Test(); 
+			
 			System.setIn(new FileInputStream(new File("input.txt")));
 			ANTLRInputStream input = new ANTLRInputStream(System.in); 
 			Java8Lexer lexer= new Java8Lexer(input);
@@ -30,7 +30,7 @@ public class Test {
 			System.out.println(tree.toStringTree(parser)); // print LISP-style tree
 			
 			
-	        Test main = new Test();
+	        
 
 	        /*try {
 	        	System.out.println("Si");
