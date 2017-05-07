@@ -1,5 +1,0 @@
-public class Hello{ 
-   public void test1(String a, int b){
-   		System.out.println("Hello, World3");
-   }
-}
